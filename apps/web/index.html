@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0a0c" />
+    <title>greetings.ts — hello-supabase-server</title>
+    <meta
+      name="description"
+      content="@supabase/server running the same handler across Supabase Edge Functions, Vercel (Bun), and Cloudflare Workers."
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400;1,500&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div class="window" id="window">
+      <header class="titlebar">
+        <div class="lights" aria-hidden="true">
+          <span class="light light-r"></span>
+          <span class="light light-y"></span>
+          <span class="light light-g"></span>
+        </div>
+        <div class="title">
+          <span class="title-file">greetings.ts</span>
+          <span class="title-sep">—</span>
+          <span class="title-repo">hello-supabase-server</span>
+        </div>
+        <div class="title-right">
+          <a class="title-link" href="https://github.com/tomaspozo/hello-supabase-server" target="_blank" rel="noopener">
+            <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/>
+            </svg>
+            <span>view source</span>
+          </a>
+        </div>
+      </header>
+
+      <div class="layout">
+        <section class="editor" id="editor">
+          <nav class="tabs" role="tablist" id="tabs">
+            <button role="tab" class="tab active" data-rt="supabase" aria-selected="true">
+              <span class="tab-dot dot-supabase"></span>
+              <span class="tab-name">supabase</span>
+              <span class="tab-meta">edge.deno</span>
+            </button>
+            <button role="tab" class="tab" data-rt="vercel" aria-selected="false">
+              <span class="tab-dot dot-vercel"></span>
+              <span class="tab-name">vercel</span>
+              <span class="tab-meta">function.bun</span>
+            </button>
+            <button role="tab" class="tab" data-rt="cloudflare" aria-selected="false">
+              <span class="tab-dot dot-cloudflare"></span>
+              <span class="tab-name">cloudflare</span>
+              <span class="tab-meta">worker.v8</span>
+            </button>
+            <span class="tab-underline" id="tab-underline"></span>
+          </nav>
+
+          <div class="editor-pane">
+            <div class="snippet">
+              <header class="snippet-head">
+                <span class="snippet-path"><span id="snippet-path-label">apps/supabase/supabase/functions/hello/index.ts</span></span>
+                <span class="snippet-tag">runtime entrypoint</span>
+              </header>
+              <div class="snippet-code" id="entry-code"></div>
+            </div>
+
+            <div class="divider">
+              <span class="divider-line"></span>
+              <span class="divider-label">↓ shared handler · packages/handler/src/index.ts</span>
+              <span class="divider-line"></span>
+            </div>
+
+            <div class="snippet snippet-handler" data-collapsed>
+              <button
+                type="button"
+                class="snippet-head snippet-head--toggle"
+                id="handler-toggle"
+                aria-expanded="false"
+                aria-controls="handler-code"
+              >
+                <span class="snippet-path">packages/handler/src/index.ts</span>
+                <span class="snippet-meta" id="handler-line-count"></span>
+                <span class="snippet-tag handler-tag">one source of truth</span>
+                <span class="snippet-caret" aria-hidden="true">▸</span>
+              </button>
+              <div class="snippet-code" id="handler-code"></div>
+              <button
+                type="button"
+                class="snippet-expand"
+                id="handler-show-all"
+                aria-controls="handler-code"
+              >
+                <span class="snippet-expand-show">
+                  show all
+                  <span class="snippet-expand-meta" id="handler-line-count-2">17 lines</span>
+                </span>
+                <span class="snippet-expand-hide">collapse ↑</span>
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <form class="repl" id="greet-form" autocomplete="off">
+        <label for="name-input" class="repl-prompt">▸ <span class="repl-tok-key">name</span><span class="repl-tok-eq">=</span></label>
+        <input id="name-input" type="text" placeholder="Tomas" spellcheck="false" />
+        <button class="run" type="submit">
+          <span>run</span>
+          <span class="run-arrow">▸</span>
+        </button>
+      </form>
+
+      <section class="terminal" id="terminal">
+        <header class="terminal-head">
+          <span class="term-prompt">$</span>
+          <span class="term-label">terminal</span>
+          <span class="term-meta" id="term-meta">3 channels · idle</span>
+          <button class="term-clear" id="term-clear" type="button" aria-label="clear">clear</button>
+        </header>
+        <ol class="term-log" id="term-log">
+          <li class="hint"><span class="comment">// type a name above and press enter</span></li>
+        </ol>
+      </section>
+
+      <footer class="statusbar">
+        <span class="status-segment"><span class="status-icon">⎇</span> main</span>
+        <span class="status-segment">TypeScript</span>
+        <span class="status-segment" id="status-cursor">Ln 1, Col 1</span>
+        <span class="status-segment status-ok"><span class="status-icon">●</span> 0 errors</span>
+        <span class="status-spacer"></span>
+        <span class="status-segment status-deploy">cloudflare pages</span>
+      </footer>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

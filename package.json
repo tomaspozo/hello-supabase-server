@@ -7,7 +7,9 @@
     "call": "bun scripts/call-all.ts",
     "deploy:supabase": "pnpm --filter ./apps/supabase run deploy",
     "deploy:vercel": "vercel deploy --prod",
-    "deploy:cloudflare": "pnpm --filter ./apps/cloudflare run deploy"
+    "deploy:cloudflare": "pnpm --filter ./apps/cloudflare run deploy",
+    "deploy:web": "pnpm --filter ./apps/web run deploy",
+    "dev:web": "pnpm --filter ./apps/web run dev"
   },
   "devDependencies": {
     "typescript": "^5.6.0",

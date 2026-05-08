@@ -15,6 +15,7 @@ packages/handler        the single shared handler
 apps/supabase           Supabase Edge Function entrypoint + migrations
 apps/vercel             Vercel + Bun entrypoint
 apps/cloudflare         Cloudflare Worker entrypoint
+apps/web                Vite + vanilla TS frontend (Cloudflare Pages)
 scripts/call-all.ts     POSTs to all three deployed URLs
 ```
 
@@ -63,13 +64,26 @@ pnpm deploy:cloudflare
 Fill in `.env` with the three deployed URLs and the publishable key, then:
 
 ```sh
-pnpm call
+pnpm call               # default name "MyName"
+pnpm call "Tomas"  # custom name
 ```
 
 Expected output (language is random per call):
 
 ```
-supabase    200  Aloha, MyName! (Hawaiian)
-vercel      200  Hola, MyName! (Spanish)
-cloudflare  200  Bonjour, MyName! (French)
+supabase    200  Aloha, Tomas! (Hawaiian)
+vercel      200  Hola, Tomas! (Spanish)
+cloudflare  200  Bonjour, Tomas! (French)
 ```
+
+## Frontend
+
+A small Vite + vanilla TS page that POSTs to all three runtimes in parallel, hosted on Cloudflare Pages:
+
+```sh
+cp apps/web/.env.example apps/web/.env   # fill in the four VITE_* vars
+pnpm dev:web                             # local dev (http://localhost:5173)
+pnpm deploy:web                          # build + wrangler pages deploy
+```
+
+Live at https://hello-supabase-server-web.pages.dev/.
