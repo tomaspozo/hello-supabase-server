@@ -45,6 +45,9 @@ importers:
       '@hello-supabase-server/handler':
         specifier: workspace:*
         version: link:../../packages/handler
+      '@hello-supabase-server/web':
+        specifier: workspace:*
+        version: link:../web
       '@supabase/server':
         specifier: 1.0.0
         version: 1.0.0(@supabase/supabase-js@2.105.3)

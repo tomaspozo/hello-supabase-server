@@ -5,10 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vercel dev",
+    "build": "pnpm --filter @hello-supabase-server/web run build && rm -rf dist && cp -r ../web/dist dist",
     "deploy": "vercel deploy --prod"
   },
   "dependencies": {
     "@hello-supabase-server/handler": "workspace:*",
+    "@hello-supabase-server/web": "workspace:*",
     "@supabase/server": "1.0.0"
   },
   "devDependencies": {
