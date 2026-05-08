@@ -1,0 +1,4 @@
+project_id = "hello-supabase-server"
+
+[functions.hello]
+verify_jwt = false

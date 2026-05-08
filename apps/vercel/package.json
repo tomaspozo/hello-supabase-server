@@ -1,0 +1,17 @@
+{
+  "name": "@hello-supabase-server/vercel-app",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel deploy --prod"
+  },
+  "dependencies": {
+    "@hello-supabase-server/handler": "workspace:*",
+    "@supabase/server": "1.0.0"
+  },
+  "devDependencies": {
+    "vercel": "^53.2.0"
+  }
+}

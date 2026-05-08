@@ -1,0 +1,12 @@
+{
+  "name": "@hello-supabase-server/supabase-app",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "supabase functions serve hello",
+    "deploy": "supabase functions deploy hello"
+  },
+  "devDependencies": {
+    "supabase": "2.99.0-beta.2"
+  }
+}
