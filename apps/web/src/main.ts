@@ -171,9 +171,6 @@ form.addEventListener("submit", async (e) => {
   // Clear hint on first run
   log.querySelector(".hint")?.remove();
 
-  // Reset prior fastest markers
-  log.querySelectorAll(".fastest").forEach((el) => el.classList.remove("fastest"));
-
   runBtn.disabled = true;
   repl.classList.add("is-running");
   termMeta.textContent = "3 channels · running";
@@ -182,25 +179,8 @@ form.addEventListener("submit", async (e) => {
   appendRequestLine(name);
 
   const t0 = performance.now();
-  const order: Array<{ rt: Runtime["id"]; ms: number; ok: boolean; lineEl: HTMLLIElement }> = [];
-
-  const tasks = (Object.values(RUNTIMES) as Runtime[]).map(async (rt) => {
-    const result = await callOne(rt, name, t0);
-    order.push({ rt: rt.id, ms: result.ms, ok: result.ok, lineEl: result.lineEl });
-    return result;
-  });
-
+  const tasks = (Object.values(RUNTIMES) as Runtime[]).map((rt) => callOne(rt, name, t0));
   await Promise.allSettled(tasks);
-
-  // Mark the fastest successful run
-  const successes = order.filter((o) => o.ok).sort((a, b) => a.ms - b.ms);
-  if (successes[0]) {
-    successes[0].lineEl.classList.add("fastest");
-    const badge = document.createElement("span");
-    badge.className = "badge";
-    badge.textContent = "fastest";
-    successes[0].lineEl.appendChild(badge);
-  }
 
   termMeta.textContent = `3 channels · done in ${Math.round(performance.now() - t0)}ms`;
   runBtn.disabled = false;
@@ -209,19 +189,15 @@ form.addEventListener("submit", async (e) => {
 
 /* ─── Per-runtime fetch ─── */
 
-async function callOne(
-  rt: Runtime,
-  name: string,
-  t0: number,
-): Promise<{ ok: boolean; ms: number; lineEl: HTMLLIElement }> {
+async function callOne(rt: Runtime, name: string, t0: number): Promise<void> {
   if (!rt.url) {
-    const lineEl = appendLine({
+    appendLine({
       kind: "err",
       rt: rt.id,
       ms: 0,
       body: `set VITE_${rt.id.toUpperCase()}_FN_URL`,
     });
-    return { ok: false, ms: 0, lineEl };
+    return;
   }
 
   try {
@@ -234,26 +210,24 @@ async function callOne(
     const text = (await res.text()).trim();
 
     if (!res.ok) {
-      const lineEl = appendLine({
+      appendLine({
         kind: "err",
         rt: rt.id,
         ms,
         body: `${res.status} ${text || res.statusText}`,
       });
-      return { ok: false, ms, lineEl };
+      return;
     }
 
-    const lineEl = appendLine({ kind: "ok", rt: rt.id, ms, body: parseGreeting(text) });
-    return { ok: true, ms, lineEl };
+    appendLine({ kind: "ok", rt: rt.id, ms, body: parseGreeting(text) });
   } catch (err) {
     const ms = Math.round(performance.now() - t0);
-    const lineEl = appendLine({
+    appendLine({
       kind: "err",
       rt: rt.id,
       ms,
       body: (err as Error).message,
     });
-    return { ok: false, ms, lineEl };
   }
 }
 
@@ -268,7 +242,7 @@ type LineSpec =
       body: string | { greeting: string; greeted: string; language: string };
     };
 
-function appendLine(spec: LineSpec): HTMLLIElement {
+function appendLine(spec: LineSpec): void {
   const li = document.createElement("li");
 
   if (spec.kind === "req") {
@@ -293,7 +267,6 @@ function appendLine(spec: LineSpec): HTMLLIElement {
 
   log.appendChild(li);
   log.scrollTop = log.scrollHeight;
-  return li;
 }
 
 function appendRequestLine(name: string) {

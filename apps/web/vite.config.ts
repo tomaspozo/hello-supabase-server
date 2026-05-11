@@ -15,7 +15,7 @@ const ENTRYPOINTS = {
   cloudflare: `export { default } from "@hello-supabase-server/handler";`,
 } as const;
 
-const SHIKI_THEMES = { light: "vitesse-light", dark: "vitesse-black" } as const;
+const SHIKI_THEMES = { light: "github-light", dark: "github-dark" } as const;
 
 function highlightedCodePlugin(): Plugin {
   return {
