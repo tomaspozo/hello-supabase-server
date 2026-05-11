@@ -18,6 +18,17 @@
     />
 
     <link rel="stylesheet" href="/src/style.css" />
+
+    <script>
+      (function () {
+        var stored = null;
+        try { stored = localStorage.getItem("theme"); } catch (e) {}
+        var theme = stored === "light" || stored === "dark"
+          ? stored
+          : matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
   </head>
   <body>
     <div class="window" id="window">
@@ -136,7 +147,15 @@
         <span class="status-segment" id="status-cursor">Ln 1, Col 1</span>
         <span class="status-segment status-ok"><span class="status-icon">●</span> 0 errors</span>
         <span class="status-spacer"></span>
-        <span class="status-segment status-deploy">cloudflare pages</span>
+        <button
+          class="status-segment status-theme"
+          id="theme-toggle"
+          type="button"
+          aria-label="toggle color theme"
+        >
+          <span class="theme-icon" aria-hidden="true"></span>
+          <span class="theme-label" id="theme-label">dark</span>
+        </button>
       </footer>
     </div>
 

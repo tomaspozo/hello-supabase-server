@@ -114,6 +114,28 @@ window.addEventListener("resize", () => {
   if (active) moveUnderline(active);
 });
 
+/* ─── Theme toggle ─── */
+
+type Theme = "dark" | "light";
+const themeBtn = $("#theme-toggle") as HTMLButtonElement | null;
+const themeLabel = $("#theme-label");
+
+function currentTheme(): Theme {
+  return (document.documentElement.getAttribute("data-theme") as Theme) || "dark";
+}
+
+function applyTheme(theme: Theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  if (themeLabel) themeLabel.textContent = theme;
+  try { localStorage.setItem("theme", theme); } catch {}
+}
+
+applyTheme(currentTheme());
+
+themeBtn?.addEventListener("click", () => {
+  applyTheme(currentTheme() === "dark" ? "light" : "dark");
+});
+
 /* ─── Status bar Ln/Col ─── */
 
 const nameInput = $("#name-input") as HTMLInputElement;

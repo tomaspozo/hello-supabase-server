@@ -15,7 +15,7 @@ const ENTRYPOINTS = {
   cloudflare: `export { default } from "@hello-supabase-server/handler";`,
 } as const;
 
-const SHIKI_THEME = "vitesse-black";
+const SHIKI_THEMES = { light: "vitesse-light", dark: "vitesse-black" } as const;
 
 function highlightedCodePlugin(): Plugin {
   return {
@@ -27,7 +27,11 @@ function highlightedCodePlugin(): Plugin {
       if (id !== RESOLVED_VIRTUAL_ID) return;
       const handlerSrc = (await readFile(handlerPath, "utf8")).trimEnd();
 
-      const opts = { lang: "ts" as const, theme: SHIKI_THEME };
+      const opts = {
+        lang: "ts" as const,
+        themes: SHIKI_THEMES,
+        defaultColor: false as const,
+      };
       const handler = await codeToHtml(handlerSrc, opts);
       const entrypoints = {
         supabase: await codeToHtml(ENTRYPOINTS.supabase, opts),
