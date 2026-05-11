@@ -89,19 +89,41 @@
               <span class="divider-line"></span>
             </div>
 
-            <div class="snippet snippet-handler" data-collapsed>
-              <button
-                type="button"
-                class="snippet-head snippet-head--toggle"
-                id="handler-toggle"
-                aria-expanded="false"
-                aria-controls="handler-code"
-              >
+            <div class="snippet snippet-handler" data-collapsed data-variant="with">
+              <header class="snippet-head">
                 <span class="snippet-path">packages/handler/src/index.ts</span>
                 <span class="snippet-meta" id="handler-line-count"></span>
-                <span class="snippet-tag handler-tag">one source of truth</span>
-                <span class="snippet-caret" aria-hidden="true">▸</span>
-              </button>
+                <div class="variant-toggle" role="tablist" aria-label="handler variant">
+                  <button
+                    type="button"
+                    role="tab"
+                    class="variant-btn active"
+                    data-variant="with"
+                    aria-selected="true"
+                  >
+                    with <code>@supabase/server</code>
+                  </button>
+                  <button
+                    type="button"
+                    role="tab"
+                    class="variant-btn"
+                    data-variant="without"
+                    aria-selected="false"
+                  >
+                    without
+                  </button>
+                </div>
+                <button
+                  type="button"
+                  class="snippet-collapse"
+                  id="handler-toggle"
+                  aria-expanded="false"
+                  aria-controls="handler-code"
+                  aria-label="toggle handler code"
+                >
+                  <span class="snippet-caret" aria-hidden="true">▸</span>
+                </button>
+              </header>
               <div class="snippet-code" id="handler-code"></div>
               <button
                 type="button"

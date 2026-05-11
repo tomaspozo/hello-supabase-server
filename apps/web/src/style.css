@@ -285,35 +285,69 @@ body::before {
   font-variant-numeric: tabular-nums;
 }
 
-/* Interactive head variant (used on the collapsible handler snippet) */
-.snippet-head--toggle {
+/* Variant toggle (with @supabase/server / without) */
+.variant-toggle {
+  display: inline-flex;
+  margin-left: auto;
+  background: var(--bg-deep);
+  border: 1px solid var(--hairline);
+  border-radius: 99px;
+  padding: 2px;
+  gap: 2px;
+}
+.variant-btn {
   font: inherit;
-  color: inherit;
-  cursor: pointer;
-  text-align: left;
-  width: 100%;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--ink-mute);
+  background: transparent;
   border: 0;
-  border-bottom: 1px solid var(--hairline);
-  transition: background 0.18s ease, border-color 0.18s ease;
+  padding: 3px 10px;
+  border-radius: 99px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.18s, background 0.18s;
 }
-.snippet-head--toggle:hover {
-  background: var(--hover-wash-2);
-  border-bottom-color: var(--hairline-2);
+.variant-btn code {
+  font-family: var(--mono);
+  font-size: inherit;
+  color: inherit;
 }
-.snippet-head--toggle:focus-visible {
+.variant-btn:hover { color: var(--ink-soft); }
+.variant-btn.active {
+  background: var(--accent);
+  color: var(--ink-on-accent);
+}
+.variant-btn.active code { color: var(--ink-on-accent); }
+.variant-btn:focus-visible {
   outline: 1px solid var(--accent);
-  outline-offset: -1px;
+  outline-offset: 1px;
+}
+
+.snippet-collapse {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: transparent;
+  border: 0;
+  padding: 2px 4px;
+  margin-right: -4px;
+  color: var(--ink-mute);
+  cursor: pointer;
+  transition: color 0.18s;
+}
+.snippet-collapse:hover { color: var(--ink); }
+.snippet-collapse:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 1px;
+  border-radius: 4px;
 }
 
 .snippet-caret {
   width: 14px;
   display: inline-flex;
   justify-content: center;
-  color: var(--ink-mute);
   font-size: 10px;
   transition: transform 0.22s cubic-bezier(0.2, 0, 0, 1), color 0.18s ease;
-  margin-left: 4px;
-  margin-right: -2px;
 }
 .snippet:not([data-collapsed]) .snippet-caret {
   transform: rotate(90deg);

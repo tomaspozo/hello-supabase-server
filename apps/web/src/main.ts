@@ -1,4 +1,10 @@
-import { handler, handlerLineCount, entrypoints } from "virtual:highlighted-code";
+import {
+  handler,
+  handlerLineCount,
+  handlerVanilla,
+  handlerVanillaLineCount,
+  entrypoints,
+} from "virtual:highlighted-code";
 
 type Runtime = {
   id: "supabase" | "vercel" | "cloudflare";
@@ -32,14 +38,27 @@ const $ = <T extends Element = HTMLElement>(s: string) =>
 /* ─── Inject highlighted handler + initial entrypoint ─── */
 
 const handlerCodeEl = $("#handler-code")!;
-handlerCodeEl.innerHTML = handler;
+const handlerLineCountEls = [$("#handler-line-count"), $("#handler-line-count-2")];
 
-[
-  $("#handler-line-count"),
-  $("#handler-line-count-2"),
-].forEach((el) => {
-  if (el) el.textContent = `${handlerLineCount} lines`;
-});
+type HandlerVariant = "with" | "without";
+const VARIANTS: Record<HandlerVariant, { html: string; lines: number }> = {
+  with:    { html: handler,        lines: handlerLineCount },
+  without: { html: handlerVanilla, lines: handlerVanillaLineCount },
+};
+
+function setHandlerVariant(variant: HandlerVariant) {
+  const v = VARIANTS[variant];
+  handlerCodeEl.innerHTML = v.html;
+  handlerLineCountEls.forEach((el) => {
+    if (el) el.textContent = `${v.lines} lines`;
+  });
+  handlerSnippet?.setAttribute("data-variant", variant);
+  document.querySelectorAll<HTMLButtonElement>(".variant-btn").forEach((btn) => {
+    const active = btn.dataset.variant === variant;
+    btn.classList.toggle("active", active);
+    btn.setAttribute("aria-selected", String(active));
+  });
+}
 
 /* ─── Collapsible shared handler ─── */
 const handlerSnippet = document.querySelector<HTMLElement>(".snippet-handler");
@@ -62,6 +81,14 @@ function toggleHandler() {
 
 handlerToggle?.addEventListener("click", toggleHandler);
 handlerShowAll?.addEventListener("click", toggleHandler);
+
+document.querySelectorAll<HTMLButtonElement>(".variant-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    setHandlerVariant(btn.dataset.variant as HandlerVariant);
+  });
+});
+
+setHandlerVariant("with");
 
 const entryCodeEl = $("#entry-code")!;
 const snippetPathLabel = $("#snippet-path-label")!;
