@@ -74,8 +74,8 @@ importers:
   packages/handler:
     dependencies:
       '@supabase/server':
-        specifier: 1.0.0
-        version: 1.0.0(@supabase/supabase-js@2.105.3)
+        specifier: 1.1.0-rc.58
+        version: 1.1.0-rc.58(@supabase/supabase-js@2.105.3)
 
 packages:
 
@@ -1735,6 +1735,19 @@ packages:
 
   '@supabase/server@1.0.0':
     resolution: {integrity: sha512-9mBelWHk4yTcfOpjTpcCYx75/5M+WD5Brnp0SZWkoH9qwdwefH1COB0r7EgTL7GqfwCtmH4Hmc+W2gvQRRXr7g==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      '@supabase/supabase-js': ^2.0.0
+      h3: ^2.0.0
+      hono: ^4.0.0
+    peerDependenciesMeta:
+      h3:
+        optional: true
+      hono:
+        optional: true
+
+  '@supabase/server@1.1.0-rc.58':
+    resolution: {integrity: sha512-9g4WqphjJlSYOuHtH75h4svQN5/c7935wKM7yUcplSAey+PtGfa9WlOeVfRoPa3Zw6qypjLmH8+Pfgb8Fq/gXg==}
     engines: {node: '>=20'}
     peerDependencies:
       '@supabase/supabase-js': ^2.0.0
@@ -4508,6 +4521,11 @@ snapshots:
       - utf-8-validate
 
   '@supabase/server@1.0.0(@supabase/supabase-js@2.105.3)':
+    dependencies:
+      '@supabase/supabase-js': 2.105.3
+      jose: 6.2.3
+
+  '@supabase/server@1.1.0-rc.58(@supabase/supabase-js@2.105.3)':
     dependencies:
       '@supabase/supabase-js': 2.105.3
       jose: 6.2.3
