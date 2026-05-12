@@ -9,6 +9,9 @@
     "preview": "vite preview",
     "deploy": "vite build && wrangler pages deploy dist --project-name=hello-supabase-server-web --commit-dirty=true"
   },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0"
+  },
   "devDependencies": {
     "vite": "^5.4.10",
     "typescript": "^5.6.0",

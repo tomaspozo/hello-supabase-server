@@ -10,9 +10,9 @@ const here = dirname(fileURLToPath(import.meta.url));
 const handlerPath = resolve(here, "../../packages/handler/src/index.ts");
 
 const ENTRYPOINTS = {
-  supabase: `import app from "@hello-supabase-server/handler";\n\nDeno.serve(app.fetch);`,
-  vercel: `export { default } from "../../../packages/handler/src/index.ts";`,
-  cloudflare: `export { default } from "@hello-supabase-server/handler";`,
+  supabase: `import { createApp } from "@hello-supabase-server/handler";\n\nDeno.serve(createApp("supabase").fetch);`,
+  vercel: `import { createApp } from "../../../packages/handler/src/index.ts";\n\nexport default createApp("vercel");`,
+  cloudflare: `import { createApp } from "@hello-supabase-server/handler";\n\nexport default createApp("cloudflare");`,
 } as const;
 
 const HANDLER_VANILLA = `import { createClient } from "@supabase/supabase-js";

@@ -32,7 +32,14 @@ for (const { name, url } of targets) {
       body,
     });
     const text = await res.text();
-    console.log(`${name}  ${res.status}  ${text}`);
+    let display = text;
+    try {
+      const json = JSON.parse(text) as { greeting?: string; name?: string; language?: string };
+      if (json.greeting && json.name && json.language) {
+        display = `${json.greeting}, ${json.name}! (${json.language})`;
+      }
+    } catch {}
+    console.log(`${name}  ${res.status}  ${display}`);
   } catch (err) {
     console.log(`${name}  ERROR  ${(err as Error).message}`);
   }

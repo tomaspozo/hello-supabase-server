@@ -81,9 +81,20 @@ cloudflare  200  Bonjour, Tomas! (French)
 A small Vite + vanilla TS page that POSTs to all three runtimes in parallel, hosted on Cloudflare Pages:
 
 ```sh
-cp apps/web/.env.example apps/web/.env   # fill in the four VITE_* vars
+cp apps/web/.env.example apps/web/.env   # fill in the VITE_* vars
 pnpm dev:web                             # local dev (http://localhost:5173)
 pnpm deploy:web                          # build + wrangler pages deploy
 ```
 
 Live at https://hello-supabase-server-web.pages.dev/.
+
+### Auth + stats
+
+Visitors can sign up / sign in (email + password). Once signed in, every `/hello`
+call is logged to an `invocations` table (request_id, user_id, platform,
+latency_ms) and a per-runtime stats panel appears below the terminal showing
+count + avg latency for that user.
+
+For the smoothest demo flow, **turn off "Confirm email"** in
+Supabase → Authentication → Settings so signup auto-signs-in. Anonymous calls
+(publishable-key only) keep working — no row is recorded.

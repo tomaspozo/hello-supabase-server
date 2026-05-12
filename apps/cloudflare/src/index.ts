@@ -1,1 +1,3 @@
-export { default } from "@hello-supabase-server/handler";
+import { createApp } from "@hello-supabase-server/handler";
+
+export default createApp("cloudflare");

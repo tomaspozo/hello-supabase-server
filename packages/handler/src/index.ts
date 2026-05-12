@@ -1,19 +1,22 @@
 import { withSupabase } from "@supabase/server";
+import type { Greeting, Platform } from "./types.ts";
 
-const app = {
-  fetch: withSupabase({ auth: "publishable" }, async (req, ctx) => {
-    const { name } = (await req.json()) as { name: string };
+export type { Platform } from "./types.ts";
 
-    const { data, error } = await ctx.supabaseAdmin
-      .from("greetings")
-      .select("language, greeting");
+export function createApp(_platform: Platform) {
+  return {
+    fetch: withSupabase({ auth: ["user", "publishable"] }, async (req, ctx) => {
+      const { name } = (await req.json()) as { name: string };
 
-    if (error) return new Response(`db error: ${error.message}`, { status: 500 });
-    if (!data?.length) return new Response("no greetings seeded", { status: 500 });
+      const { data, error } = await ctx.supabaseAdmin
+        .from("greetings")
+        .select<"language, greeting", Greeting>("language, greeting");
 
-    const pick = data[Math.floor(Math.random() * data.length)];
-    return new Response(`${pick.greeting}, ${name}! (${pick.language})`);
-  }),
-};
+      if (error) return new Response(`db error: ${error.message}`, { status: 500 });
+      if (!data?.length) return new Response("no greetings seeded", { status: 500 });
 
-export default app;
+      const pick = data[Math.floor(Math.random() * data.length)];
+      return Response.json({ greeting: pick.greeting, language: pick.language, name });
+    }),
+  };
+}
