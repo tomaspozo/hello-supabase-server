@@ -5,7 +5,7 @@
   "description": "One handler, three runtimes: Supabase Edge Functions, Vercel (Bun), Cloudflare Workers — auth via @supabase/server.",
   "scripts": {
     "call": "bun scripts/call-all.ts",
-    "deploy:all": "pnpm run --parallel \"/^deploy:(supabase|vercel|cloudflare)$/\"",
+    "deploy:all": "pnpm run --parallel --include-workspace-root \"/^deploy:(supabase|vercel|cloudflare)$/\"",
     "deploy:supabase": "pnpm --filter ./apps/supabase run deploy",
     "deploy:vercel": "vercel deploy --prod",
     "deploy:cloudflare": "pnpm --filter ./apps/cloudflare run deploy",
@@ -17,5 +17,13 @@
     "typescript": "^5.6.0",
     "vercel": "^53.2.0"
   },
-  "packageManager": "pnpm@11.1.1"
+  "packageManager": "pnpm@11.1.1",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "msgpackr-extract",
+      "sharp",
+      "workerd"
+    ]
+  }
 }
