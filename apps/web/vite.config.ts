@@ -16,44 +16,49 @@ const ENTRYPOINTS = {
 } as const;
 
 const HANDLER_VANILLA = `import { createClient } from "@supabase/supabase-js";
+import { corsHeaders } from "@supabase/supabase-js/cors";
+
+type Platform = "supabase" | "vercel" | "cloudflare";
 
 const supabaseAdmin = createClient(
   process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
+  process.env.SUPABASE_SECRET_KEY!,
 );
 
-const CORS = {
-  "access-control-allow-origin": "*",
-  "access-control-allow-methods": "POST, OPTIONS",
-  "access-control-allow-headers": "content-type, apikey, authorization",
-};
-
 const reply = (body: string, status = 200) =>
-  new Response(body, { status, headers: CORS });
+  new Response(body, { status, headers: corsHeaders });
 
-const app = {
-  fetch: async (req: Request): Promise<Response> => {
-    if (req.method === "OPTIONS") return new Response(null, { headers: CORS });
+export function createApp(_platform: Platform) {
+  return {
+    fetch: async (req: Request): Promise<Response> => {
+      if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
-    if (req.headers.get("apikey") !== process.env.SUPABASE_PUBLISHABLE_KEY) {
-      return reply("unauthorized", 401);
-    }
+      // auth: user JWT or publishable key
+      const bearer = req.headers.get("authorization")?.replace(/^Bearer /, "");
+      if (bearer) {
+        const { data, error } = await supabaseAdmin.auth.getUser(bearer);
+        if (error || !data.user) return reply("unauthorized", 401);
+      } else if (req.headers.get("apikey") !== process.env.SUPABASE_PUBLISHABLE_KEY) {
+        return reply("unauthorized", 401);
+      }
 
-    const { name } = (await req.json()) as { name: string };
+      const { name } = (await req.json()) as { name: string };
 
-    const { data, error } = await supabaseAdmin
-      .from("greetings")
-      .select("language, greeting");
+      const { data, error } = await supabaseAdmin
+        .from("greetings")
+        .select("language, greeting");
 
-    if (error) return reply(\`db error: \${error.message}\`, 500);
-    if (!data?.length) return reply("no greetings seeded", 500);
+      if (error) return reply(\`db error: \${error.message}\`, 500);
+      if (!data?.length) return reply("no greetings seeded", 500);
 
-    const pick = data[Math.floor(Math.random() * data.length)];
-    return reply(\`\${pick.greeting}, \${name}! (\${pick.language})\`);
-  },
-};
-
-export default app;`;
+      const pick = data[Math.floor(Math.random() * data.length)];
+      return Response.json(
+        { greeting: pick.greeting, language: pick.language, name },
+        { headers: corsHeaders },
+      );
+    },
+  };
+}`;
 
 const SHIKI_THEMES = { light: "github-light", dark: "github-dark" } as const;
 

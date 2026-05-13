@@ -361,7 +361,7 @@ body::before {
   font-size: 12.5px;
   line-height: 1.25;
   position: relative;
-  max-height: 1400px;
+  max-height: 2400px;
   transition:
     opacity 0.22s ease,
     max-height 0.32s cubic-bezier(0.2, 0, 0, 1),

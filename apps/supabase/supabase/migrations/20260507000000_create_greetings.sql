@@ -9,21 +9,13 @@ create table public.greetings (
 );
 
 -- 1. Grant the privileges the role needs
-grant select on public.greetings to anon;
-grant select, insert, update, delete on public.greetings to authenticated;
 grant select, insert, update, delete on public.greetings to service_role;
 
 -- 2. Enable RLS
 alter table public.greetings enable row level security;
 
 -- 3. Policies
--- No policy for anon → anon cannot read any rows (the grant alone doesn't help).
--- service_role bypasses RLS automatically (no policy needed for it).
-create policy "authenticated users can read greetings"
-  on public.greetings
-  for select
-  to authenticated
-  using (true);
+-- None, only service role can access this table
 
 -- 4. Seed
 insert into public.greetings (language, greeting) values
