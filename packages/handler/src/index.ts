@@ -1,8 +1,6 @@
 import { withSupabase } from "@supabase/server";
 import type { Greeting, Platform } from "./types.ts";
 
-export type { Platform } from "./types.ts";
-
 export function createApp(_platform: Platform) {
   return {
     fetch: withSupabase({ auth: ["user", "publishable"] }, async (req, ctx) => {
